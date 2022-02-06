@@ -1,0 +1,25 @@
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans',
+  'Liberation Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+@import '/node_modules/bootstrap/scss/bootstrap.scss';
+
+* {
+  &::-webkit-scrollbar-thumb {
+    background: map-get($theme-colors, 'dark');
+    cursor: pointer;
+  }
+  &::-webkit-scrollbar {
+    width: 0.25rem;
+  }
+  &::-webkit-scrollbar-track {
+    background: map-get($theme-colors, 'light');
+  }
+}
+
+.w-fit-content {
+  width: fit-content;
+}
+
+.w-chatbox {
+  max-width: 60%;
+}
