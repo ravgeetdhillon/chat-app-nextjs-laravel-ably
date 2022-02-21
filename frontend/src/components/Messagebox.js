@@ -13,13 +13,13 @@ export default function Messagebox({ message }) {
   };
 
   return (
-    <div className={`d-flex mb-3 ${message.isOwner ? 'justify-content-end pe-3' : ''}`}>
-      <div className="bg-dark text-white shadow-sm rounded py-2 px-3 w-fit-content w-messagebox">
-        <p className="mb-0 text-primary small">
+    <div className="...">
+      <div className="...">
+        <p className="...">
           <b>{message.user}</b>
         </p>
-        <p className="mb-1">{message.message}</p>
-        <p className="mb-0 text-muted small">{formatDate(message.createdAt)}</p>
+        <p className="...">{message.message}</p>
+        <p className="...">{formatDate(message.createdAt)}</p>
       </div>
     </div>
   );
