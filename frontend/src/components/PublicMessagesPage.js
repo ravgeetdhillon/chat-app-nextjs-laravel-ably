@@ -1,89 +1,97 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
+import Echo from 'laravel-echo';
+import Pusher from 'pusher-js';
 import Messagebox from './Messagebox';
 
-export default class PublicMessagesPage extends React.Component {
-  constructor() {
-    super();
-    this.state = { user: '', message: '', messages: [] };
-    Axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
-  }
+export default function PublicMessagesPage() {
+  const [user, setUser] = useState('');
+  const [message, setMessage] = useState('');
+  const [messages, setMessages] = useState([]);
 
-  componentDidMount() {
-    window.Echo.channel('public.room')
+  useEffect(() => {
+    Axios.defaults.baseURL = process.env.REACT_APP_API_BASE_URL;
+
+    const echo = new Echo({
+      broadcaster: 'pusher',
+      key: process.env.REACT_APP_MIX_ABLY_PUBLIC_KEY,
+      wsHost: 'realtime-pusher.ably.io',
+      wsPort: 443,
+      disableStats: true,
+      encrypted: true,
+    });
+
+    echo
+      .channel('public.room')
       .subscribed(() => {
         console.log('You are subscribed');
       })
       .listen('.message.new', (data) => {
-        this.setState({ messages: [...this.state.messages, data], message: '' });
+        setMessages((oldMessages) => [...oldMessages, data]);
+        setMessage('');
       });
-  }
+    // eslint-disable-next-lmessageine react-hooks/exhaustive-deps
+  }, []);
 
-  async handleSendMessage(e) {
+  async function handleSendMessage(e) {
     e.preventDefault();
 
-    if (!this.state.user) {
+    if (!user) {
       alert('Please add your username');
       return;
     }
 
-    if (!this.state.message) {
+    if (!message) {
       alert('Please add a message');
       return;
     }
 
     try {
       await Axios.post('/new-message', {
-        user: this.state.user,
-        message: this.state.message,
+        user: user,
+        message: message,
       });
     } catch (error) {
       console.error(error);
     }
   }
 
-  render() {
-    return (
-      <div className="...">
-        <div className="...">
-          <div className="...">
-            <h1 className="...">Public Space</h1>
-            <p className="...">Post your random thoughts for the world to see</p>
-          </div>
+  return (
+    <div>
+      <div>
+        <div>
+          <h1>Public Space</h1>
+          <p>Post your random thoughts for the world to see</p>
+        </div>
 
-          <div className="...">
-            {this.state.messages.map((message) => (
-              <Messagebox key={message.id} message={message} />
-            ))}
-          </div>
+        <div>
+          {messages.map((message) => (
+            <Messagebox key={message.id} message={message} />
+          ))}
+        </div>
 
-          <div className="...">
-            <form className="..." onSubmit={(e) => this.handleSendMessage(e)}>
+        <div>
+          <form onSubmit={(e) => handleSendMessage(e)}>
+            <input
+              type="text"
+              placeholder="Set your username"
+              value={user}
+              onChange={(e) => setUser(e.target.value)}
+              required
+            />
+            <div>
               <input
                 type="text"
-                className="..."
-                placeholder="Set your username"
-                value={this.state.user}
-                onChange={(e) => this.setState({ user: e.target.value })}
+                placeholder="Type your message..."
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
                 required
               />
-              <div className="...">
-                <input
-                  type="text"
-                  className="..."
-                  placeholder="Type your message..."
-                  value={this.state.message}
-                  onChange={(e) => this.setState({ message: e.target.value })}
-                  required
-                />
-                <button className="..." onClick={(e) => this.handleSendMessage(e)}>
-                  Send
-                </button>
-              </div>
-            </form>
-          </div>
+              <button onClick={(e) => handleSendMessage(e)}>Send</button>
+            </div>
+          </form>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
