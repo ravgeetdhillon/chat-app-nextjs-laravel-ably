@@ -1,25 +1,17 @@
-import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-import timezone from 'dayjs/plugin/timezone';
-import relativeTime from 'dayjs/plugin/relativeTime';
-
 export default function Messagebox({ message }) {
-  const formatDate = (value, format = 'HH:mm') => {
+  const formatDate = (value) => {
     if (!value) return '';
-    dayjs.extend(utc);
-    dayjs.extend(timezone);
-    dayjs.extend(relativeTime);
-    return dayjs(value).tz(dayjs.tz.guess()).format(format);
+    return new Date(value).toLocaleTimeString();
   };
 
   return (
-    <div className="...">
-      <div className="...">
-        <p className="...">
+    <div>
+      <div>
+        <p>
           <b>{message.user}</b>
         </p>
-        <p className="...">{message.message}</p>
-        <p className="...">{formatDate(message.createdAt)}</p>
+        <p>{message.message}</p>
+        <p>{formatDate(message.createdAt)}</p>
       </div>
     </div>
   );
