@@ -2,7 +2,7 @@
 
 # Chat App with Next.js, Laravel and Ably
 
-This repository serves as a code container for the tutorial I wrote on [Ably's Blog](#todo).
+This repository serves as a code container for the tutorial I wrote on [Ably's Blog](https://www.ravgeet.in/blog/building-a-realtime-chat-app-with-react-laravel-and-websockets).
 
 > Blog link will be updated once the article is published.
 
@@ -59,7 +59,7 @@ $ npm install
 $ npm run dev
 ```
 
-> For detailed instructions, [read the blog](#todo).
+> For detailed instructions, [read the blog](https://www.ravgeet.in/blog/building-a-realtime-chat-app-with-react-laravel-and-websockets).
 
 ## Tech Stack
 
